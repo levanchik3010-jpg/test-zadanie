@@ -1,0 +1,15 @@
+[project]
+name = "youtube-clickbait-reporter"
+version = "0.1.0"
+description = "Отчет о потреблении кофе: CLI-инструмент для анализа YouTube метрик"
+requires-python = ">=3.12"
+dependencies = [
+    "tabulate>=0.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.12",
+]
