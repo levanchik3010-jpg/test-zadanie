@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from main import main
 
-def test_cli_unknown_report(caplog):  # Заменили capsys на caplog
+def test_cli_unknown_report(caplog):
     """Проверка завершения программы с ошибкой при неверном названии отчета."""
     test_args = ["main.py", "--files", "any.csv", "--report", "unknown_type"]
 
@@ -13,13 +13,11 @@ def test_cli_unknown_report(caplog):  # Заменили capsys на caplog
             main()
         assert e.value.code == 1
 
-    # caplog.text хранит все перехваченные логи в виде одной строки
     assert "Отчет 'unknown_type' не найден" in caplog.text
 
 
 def test_cli_no_videos_found(tmp_path, caplog):
     """Проверка информационного сообщения, когда данные не подошли под критерии отчета."""
-    # ПРИНУДИТЕЛЬНО заставляем caplog слушать уровень INFO для этого теста
     caplog.set_level(logging.INFO)
 
     f = tmp_path / "empty.csv"
@@ -30,5 +28,4 @@ def test_cli_no_videos_found(tmp_path, caplog):
     with patch.object(sys, 'argv', test_args):
         main()
 
-    # Теперь caplog гарантированно увидит логи уровня INFO
     assert "Видео, соответствующих критериям отчета, не найдено" in caplog.text
