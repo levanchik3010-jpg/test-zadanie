@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict
+from models import VideoData
 
 
 class BaseReport(ABC):
@@ -11,11 +11,11 @@ class BaseReport(ABC):
 
     @property
     @abstractmethod
-    def columns(self) -> List[str]:
+    def columns(self) -> list[str]:
         """Колонки, которые будут выведены в таблицу"""
         pass
 
     @abstractmethod
-    def apply_logic(self, data: List[Dict]) -> List[Dict]:
-        """Фильтрация и сортировка"""
+    def apply_logic(self, data: list[VideoData]) -> list[VideoData]:
+        """Фильтрация и сортировка данных"""
         pass

@@ -1,29 +1,19 @@
 import csv
-import sys
-from typing import List, Dict, Any
+from models import VideoData
 
 
-def load_csv_files(file_paths: List[str]) -> List[Dict[str, Any]]:
-    """
-    Читает список CSV-файлов и возвращает объединенные данные.
-    Пропускает строки с некорректными числовыми данными.
-    """
-    combined_data: List[Dict[str, Any]] = []
+def load_csv_files(file_paths: list[str]) -> list[VideoData]:
+    """Загружает данные из нескольких CSV-файлов и возвращает список объектов VideoData."""
+    combined_data: list[VideoData] = []
 
     for path in file_paths:
-        try:
-            with open(path, mode='r', encoding='utf-8') as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    try:
-                        # Конвертируем числовые значения для фильтрации
-                        row['ctr'] = float(row['ctr'])
-                        row['retention_rate'] = float(row['retention_rate'])
-                        combined_data.append(row)
-                    except (ValueError, TypeError, KeyError):
-                        print(f"Предупреждение: Пропущена некорректная строка в файле {path}: {row}", file=sys.stderr)
-                        continue
-        except FileNotFoundError:
-            raise FileNotFoundError(path)
+        with open(path, mode="r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                try:
+                    video = VideoData.from_dict(row)
+                    combined_data.append(video)
+                except ValueError:
+                    continue
 
     return combined_data
